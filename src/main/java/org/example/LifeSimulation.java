@@ -1,16 +1,11 @@
 package org.example;
 
 public class LifeSimulation {
-    public LifeSimulation() {
-
-    }
 
     public char[][] run(char[][] field, int iterations) {
         char[][] newField = field;
         for (int i = 0; i < iterations; i++) {
             newField = lifeCycle(newField);
-            System.out.println("iteration: " + i);
-            printArray(newField);
         }
         return newField;
     }
@@ -57,14 +52,6 @@ public class LifeSimulation {
             }
         }
         return count;
-    }
-    public void printArray(char[][] chars){
-        for (char[] aChar : chars) {
-            for (char c : aChar) {
-                System.out.print(c + " ");
-            }
-            System.out.println();
-        }
     }
 
 }

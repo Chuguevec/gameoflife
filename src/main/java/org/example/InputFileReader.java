@@ -5,19 +5,18 @@ import java.io.IOException;
 
 
 public class InputFileReader {
-    private String path;
+    private static final String PREFIX = "src/test/resources/";
     private int width;
     private int height;
     private Integer iterations;
-    private char [][] charsField;
+    private char[][] charsField;
 
     public InputFileReader(String pathInputFile) {
-        path = pathInputFile;
-        readFile();
+        readFile(pathInputFile);
     }
 
-    private void readFile() {
-        try (FileReader fileReader = new FileReader(path)) {
+    private void readFile(String path) {
+        try (FileReader fileReader = new FileReader(PREFIX + path)) {
             int countParam = 3;
             int currentParam = 1;
             StringBuilder builder = new StringBuilder();
@@ -25,59 +24,36 @@ public class InputFileReader {
                 char value = (char) fileReader.read();
                 if (Character.isDigit(value)) {
                     builder.append(value);
-                }else {
-                    setParam(builder, currentParam);
+                } else {
+                    setParam(builder.toString(), currentParam);
+                    builder.setLength(0);
                     currentParam++;
                 }
             }
-            charsField = new char[width][height];
+            charsField = new char[height][width];
 
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
-                    while (fileReader.ready()){
+                    while (fileReader.ready()) {
                         char value = (char) fileReader.read();
-                        if (Character.isLetterOrDigit(value)){
+                        if (Character.isLetterOrDigit(value)) {
                             charsField[i][j] = value;
                             break;
                         }
                     }
-
                 }
-
             }
-            System.out.println("width = " + width);
-            System.out.println("height = " + height);
-            System.out.println("iterations = " + iterations);
-            printArray(charsField);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    private void setParam(StringBuilder builder, int currentParam) {
+    private void setParam(String value, int currentParam) {
         switch (currentParam) {
-            case 1 -> {
-                height = Integer.parseInt(builder.toString());
-                builder.setLength(0);
-            }
-            case 2 -> {
-                width = Integer.parseInt(builder.toString());
-                builder.setLength(0);
-            }
-            case 3 -> {
-                iterations = Integer.parseInt(builder.toString());
-                builder.setLength(0);
-            }
-        }
-    }
-
-    public void printArray(char[][] chars){
-        for (char[] aChar : chars) {
-            for (char c : aChar) {
-                System.out.print(c + " ");
-            }
-            System.out.println();
+            case 1 -> height = Integer.parseInt(value);
+            case 2 -> width = Integer.parseInt(value);
+            case 3 -> iterations = Integer.parseInt(value);
         }
     }
 

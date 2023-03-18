@@ -1,15 +1,24 @@
 package org.example;
 
+
 public class GameOfLife {
     public static void main(String[] args) {
-        String path = "src/test/resources/inputGlider.txt";
-        InputFileReader fieldReader = new InputFileReader(path);
+        String input = "inputOscillator2.txt";
+        String output = "outputOscillator2.txt";
+        GameOfLife game = new GameOfLife();
+        game.game(input, output);
+    }
+
+    public void game(String input, String output) {
+        //считываем файл
+        InputFileReader fieldReader = new InputFileReader(input);
         char[][] inputField = fieldReader.getCharsField();
         int iterations = fieldReader.getIterations();
+        //запускаем обработку
         LifeSimulation lifeSimulation = new LifeSimulation();
-        char[][] chars = lifeSimulation.run(inputField, iterations);
-
-
+        char[][] result = lifeSimulation.run(inputField, iterations);
+        //записываем результат
+        OutputFileWriter writer = new OutputFileWriter();
+        writer.write(result, output);
     }
- 
 }

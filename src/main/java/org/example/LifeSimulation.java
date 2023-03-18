@@ -11,47 +11,49 @@ public class LifeSimulation {
     }
 
     private char[][] lifeCycle(char[][] field) {
-        char[][] tempField = new char[field.length][field[0].length];
-        for (int i = 0; i < tempField.length; i++) {
-            for (int j = 0; j < tempField[i].length; j++) {
+        char[][] newField = new char[field.length][field[0].length];
+        for (int i = 0; i < newField.length; i++) {
+            for (int j = 0; j < newField[i].length; j++) {
                 int countLiveNeighbors = getCountLiveNeighbors(field, i, j);
-                if (field[i][j] == 'X' && (countLiveNeighbors == 3 || countLiveNeighbors == 4)) {
-                    tempField[i][j] = 'X';
-                } else if (field[i][j] == 'O' && countLiveNeighbors == 3) {
-                    tempField[i][j] = 'X';
+                if ((isAlive(field[i][j]) && countLiveNeighbors == 4) || countLiveNeighbors == 3) {
+                    newField[i][j] = 'X';
                 } else {
-                    tempField[i][j] = 'O';
+                    newField[i][j] = 'O';
                 }
             }
         }
-        return tempField;
+        return newField;
     }
 
-    private int getCountLiveNeighbors(char[][] chars, int i, int j) {
-        int count = 0;
+    private int getCountLiveNeighbors(char[][] field, int positionByX, int positionByY) {
+        int countNeighbors = 0;
 
-        for (int i2 = i - 1; i2 <= i + 1; i2++) {
-            for (int j2 = j - 1; j2 <= j + 1; j2++) {
-                int tempJ = j2;
-                int tempI = i2;
-                if (i2 < 0) {
-                    tempI = chars.length - 1;
+        for (int x = positionByX - 1; x <= positionByX + 1; x++) {
+            for (int y = positionByY - 1; y <= positionByY + 1; y++) {
+                int positionX = x;
+                int positionY = y;
+                if (x < 0) {
+                    positionX = field.length - 1;
                 }
-                if (i2 > chars.length - 1) {
-                    tempI = 0;
+                if (x > field.length - 1) {
+                    positionX = 0;
                 }
-                if (j2 < 0) {
-                    tempJ = chars[0].length - 1;
+                if (y < 0) {
+                    positionY = field[0].length - 1;
                 }
-                if (j2 > chars[0].length - 1) {
-                    tempJ = 0;
+                if (y > field[0].length - 1) {
+                    positionY = 0;
                 }
-                if (chars[tempI][tempJ] == 'X') {
-                    count++;
+                if (isAlive(field[positionX][positionY])) {
+                    countNeighbors++;
                 }
             }
         }
-        return count;
+        return countNeighbors;
+    }
+
+    private boolean isAlive(char value) {
+        return value == 'X';
     }
 
 }

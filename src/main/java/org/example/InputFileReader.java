@@ -46,7 +46,6 @@ public class InputFileReader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private void setParam(String value, int currentParam) {
